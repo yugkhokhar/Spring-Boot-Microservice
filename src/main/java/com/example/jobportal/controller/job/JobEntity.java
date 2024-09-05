@@ -1,18 +1,34 @@
 package com.example.jobportal.controller.job;
 
-public class Job {
+
+import com.example.jobportal.controller.company.CompanyEntity;
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+//@Table(name="Jobs")
+public class JobEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private String jobName;
     private String jobDescription;
-    private Long id;
     private Long minSalary;
     private Long maxSalary;
 
-    Job(String jobName, String jobDescription, Long id, Long minSalary, Long maxSalary) {
+    @ManyToOne
+    private CompanyEntity company;
+
+    public JobEntity(){}
+
+    public JobEntity(String jobName, String jobDescription, int id, Long minSalary, Long maxSalary,CompanyEntity company) {
         this.jobName = jobName;
         this.jobDescription = jobDescription;
         this.id = id;
         this.minSalary = minSalary;
         this.maxSalary = maxSalary;
+        this.company=company;
     }
 
     public String getJobName() {
@@ -31,11 +47,11 @@ public class Job {
         this.jobDescription = jobDescription;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -53,5 +69,13 @@ public class Job {
 
     public void setMaxSalary(Long maxSalary) {
         this.maxSalary = maxSalary;
+    }
+
+    public CompanyEntity getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyEntity company) {
+        this.company = company;
     }
 }
