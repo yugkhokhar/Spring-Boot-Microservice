@@ -1,21 +1,18 @@
 package com.example.jobportal.controller.review;
 
-import com.example.jobportal.controller.job.JobRespository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReviewService implements ReviewInterface {
 
-    private final JobRespository jobRespository;
     ReviewRespository reviewRepository;
 
-    ReviewService(ReviewRespository reviewRepository, JobRespository jobRespository) {
+    ReviewService(ReviewRespository reviewRepository) {
         this.reviewRepository = reviewRepository;
-        this.jobRespository = jobRespository;
+
     }
 
     @Override
@@ -38,16 +35,15 @@ public class ReviewService implements ReviewInterface {
         return reviews;
     }
 
-//    @Override
-//    public List<ReviewEntity> getSpecificCompanyReview(int id) {
-//
-//        List<ReviewEntity> reviews = reviewRepository.
-//    }
+    @Override
+    public List<ReviewEntity> getSpecificCompanyReview(int id) {
+        return reviewRepository.findByCompanyId(id);
+    }
 
     @Override
     public Boolean updateReview(ReviewEntity review) {
 
-        if(reviewRepository.existsById(review.getId())) {
+        if (reviewRepository.existsById(review.getId())) {
             reviewRepository.save(review);
             return true;
         }
@@ -56,8 +52,8 @@ public class ReviewService implements ReviewInterface {
 
     @Override
     public Boolean deleteReview(int id) {
-        if(reviewRepository.existsById((long) id)){
-            reviewRepository.deleteById((long) id);
+        if (reviewRepository.existsById(id)) {
+            reviewRepository.deleteById(id);
             return true;
         }
         return false;
@@ -65,6 +61,19 @@ public class ReviewService implements ReviewInterface {
 
     @Override
     public Boolean deleteCompanyReviews(int companyId) {
-        return null;
+        try {
+            reviewRepository.deleteByCompanyId(companyId);
+            return true;
+        } catch (Exception e) {
+
+            return false;
+        }
     }
+
+    public ReviewEntity getReviewFromCompany(int companyId, int id) {
+        List<ReviewEntity> reviews = reviewRepository.findByCompanyId(companyId);
+
+       return reviews.stream().filter(reviewEntity -> reviewEntity.getId()==id).findFirst().orElse(null);
+    }
+
 }

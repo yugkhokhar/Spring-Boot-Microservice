@@ -26,7 +26,6 @@ public class CompanyEntity {
     @OneToMany(mappedBy = "company")
     private List<ReviewEntity>reviews;
 
-
     public CompanyEntity(){
     }
 

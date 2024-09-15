@@ -2,6 +2,7 @@ package com.example.jobportal.controller.review;
 
 
 import com.example.jobportal.controller.company.CompanyEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -20,6 +21,7 @@ public class ReviewEntity {
 
             private long rating;
 
+
             @ManyToOne
             CompanyEntity company;
 
@@ -36,7 +38,9 @@ public class ReviewEntity {
         this.rating = rating;
     }
 
-    public long getId() {
+
+
+    public int getId() {
         return id;
     }
 
